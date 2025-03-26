@@ -96,6 +96,31 @@ class SVController {
 
         include 'app/views/sinhvien/detail.php';
     }
+    public function login() {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $mssv = $_POST['mssv'];
+            $sinhVien = $this->sinhVienModel->getSinhVienByMaSV($mssv);
+
+            if ($sinhVien) {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['mssv'] = $sinhVien['MaSV'];
+                header('Location: /sangthu3/test-01/SV/');
+                exit();
+            } else {
+                $error = "MSSV không đúng.";
+                
+            }
+        }
+        include 'app/views/sinhvien/login.php';
+    }
+
+    public function logout() {
+        $_SESSION = array();
+        session_destroy();
+        header('Location: /sangthu3/test-01/SV/login');
+        exit();
+    }
 }
 
 ?>
